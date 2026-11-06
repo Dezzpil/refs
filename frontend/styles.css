@@ -1,0 +1,393 @@
+/* ---------- базовые токены ---------- */
+:root {
+  --bg: #0f1117;
+  --surface: #171a24;
+  --surface-2: #1d2130;
+  --border: #2a2f40;
+  --text: #e8eaf2;
+  --text-dim: #9aa1b5;
+  --accent: #35d0ba;
+  --accent-ink: #062b26;
+  --danger: #ff5d6e;
+  --decor: #e0a83c;
+  --model: #6ea8fe;
+  --mech: #c98bfe;
+  --radius: 14px;
+  --shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font: inherit; color: inherit; }
+input, select, textarea { font: inherit; }
+
+/* ---------- верхняя панель ---------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: rgba(15, 17, 23, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  padding-top: env(safe-area-inset-top);
+}
+
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px 6px;
+}
+
+.logo {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+.project-select {
+  flex: 1;
+  min-width: 0;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+/* ---------- вкладки ---------- */
+.tabs {
+  display: flex;
+  gap: 4px;
+  padding: 0 12px 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tabs::-webkit-scrollbar { display: none; }
+
+.tab {
+  flex: 1 0 auto;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  color: var(--text-dim);
+  padding: 7px 6px;
+  font-size: 13px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.tab.is-active {
+  background: var(--surface-2);
+  border-color: var(--border);
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ---------- контент ---------- */
+.view {
+  padding: 16px 16px 96px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.section-title {
+  margin: 0 0 12px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* карточки */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.card-title {
+  margin: 0 0 4px;
+  font-size: 17px;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+
+.card-desc {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 14px;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.badge {
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 3px 10px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  background: var(--surface-2);
+}
+
+.badge.cat-decor   { color: var(--decor); border-color: color-mix(in srgb, var(--decor) 45%, transparent); }
+.badge.cat-model   { color: var(--model); border-color: color-mix(in srgb, var(--model) 45%, transparent); }
+.badge.cat-mechanic{ color: var(--mech);  border-color: color-mix(in srgb, var(--mech) 45%, transparent); }
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  padding: 4px 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.icon-btn:active { color: var(--text); }
+
+/* миниатюра референса */
+.ref-thumb {
+  margin: -2px 0 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+
+.ref-thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ref-empty-thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 92px;
+  color: var(--text-dim);
+  font-size: 13px;
+}
+
+/* фильтры по категориям */
+.chips {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 14px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  scrollbar-width: none;
+  mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 20px), transparent 100%);
+}
+.chips::-webkit-scrollbar { display: none; }
+
+.chip {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-dim);
+  padding: 6px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.chip.is-active {
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+/* пустое состояние */
+.empty {
+  text-align: center;
+  color: var(--text-dim);
+  padding: 40px 12px;
+  font-size: 15px;
+}
+
+/* ---------- кнопка добавления ---------- */
+.fab {
+  position: fixed;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 20;
+}
+.fab:active { transform: scale(0.94); }
+
+/* ---------- нижняя модалка ---------- */
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 30;
+}
+
+.sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-radius: 20px 20px 0 0;
+  padding: 8px 16px calc(20px + env(safe-area-inset-bottom));
+  z-index: 31;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow);
+}
+
+.sheet-handle {
+  width: 40px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--border);
+  margin: 6px auto 14px;
+}
+
+.sheet h2 {
+  margin: 0 0 14px;
+  font-size: 19px;
+}
+
+.field { margin-bottom: 14px; }
+
+.field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  padding: 10px 12px;
+}
+
+.field textarea { min-height: 76px; resize: vertical; }
+
+.seg {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.seg button {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text-dim);
+  padding: 10px 4px;
+  font-size: 13px;
+  cursor: pointer;
+}
+.seg button.is-active {
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.sheet-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.btn {
+  flex: 1;
+  border: none;
+  border-radius: 12px;
+  padding: 13px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-primary { background: var(--accent); color: var(--accent-ink); }
+.btn-ghost { background: transparent; color: var(--text-dim); border: 1px solid var(--border); }
+
+/* ---------- toast ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: calc(96px + env(safe-area-inset-bottom));
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 10px 18px;
+  font-size: 14px;
+  z-index: 25;
+  box-shadow: var(--shadow);
+  max-width: calc(100vw - 32px);
+}
+
+.toast.is-error { border-color: var(--danger); color: var(--danger); }
+
+/* ---------- широкие экраны ---------- */
+@media (min-width: 720px) {
+  .view { padding-bottom: 40px; }
+  .fab { bottom: 28px; }
+  .sheet {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 520px;
+    border-radius: 20px;
+    bottom: 10vh;
+  }
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#12141c">
+  <title>Референсы — доска проектов</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <h1 class="logo">Референсы</h1>
+      <select id="project-select" class="project-select" data-testid="select-project" aria-label="Активный проект"></select>
+    </div>
+    <nav class="tabs" id="tabs" role="tablist">
+      <button class="tab is-active" data-tab="references" role="tab" aria-selected="true">Референсы</button>
+      <button class="tab" data-tab="projects" role="tab" aria-selected="false">Проекты</button>
+      <button class="tab" data-tab="mechanics" role="tab" aria-selected="false">Механики</button>
+      <button class="tab" data-tab="asset-types" role="tab" aria-selected="false">Типы ассетов</button>
+    </nav>
+  </header>
+
+  <main id="view" class="view"></main>
+
+  <button id="fab" class="fab" data-testid="button-add" aria-label="Добавить">
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+  </button>
+
+  <div id="sheet-backdrop" class="sheet-backdrop" hidden></div>
+  <div id="sheet" class="sheet" hidden role="dialog" aria-modal="true"></div>
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
