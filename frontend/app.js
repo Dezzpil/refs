@@ -362,7 +362,8 @@ function referenceForm(r = null) {
         <button type="button" class="btn btn-ghost" id="f-pick" data-testid="button-pick-file">С устройства</button>
         <button type="button" class="btn btn-ghost" id="f-edit-img" data-testid="button-edit-img">В редактор</button>
       </div>
-      <input id="f-img" data-testid="input-image-url" value="${esc(r?.image_url ?? '')}" placeholder="Ссылка на изображение или загрузите с устройства">`)}
+      <input id="f-img" data-testid="input-image-url" value="${esc(r?.image_url ?? '')}" placeholder="Ссылка на изображение или загрузите с устройства">
+      <p class="hint">Можно вставить изображение из буфера: Ctrl+V или долгое нажатие → «Вставить».</p>`)}
     <div class="ref-thumb" id="f-preview" hidden></div>
     ${field('Описание', `<textarea id="f-desc" data-testid="input-description" placeholder="Детали, что важно учесть">${esc(r?.description ?? '')}</textarea>`)}
     <div class="sheet-actions">
@@ -711,6 +712,41 @@ const editor = (() => {
 
   return { open, close };
 })();
+
+/* ---------- вставка изображения из буфера ---------- */
+
+document.addEventListener('paste', (e) => {
+  if (!el('#editor').hidden) return; // редактор уже открыт — не мешаем ему
+  const items = (e.clipboardData && e.clipboardData.items) || [];
+  const item = Array.from(items).find((i) => i.type.startsWith('image/'));
+  if (!item) return;
+  const file = item.getAsFile();
+  if (!file) return;
+  e.preventDefault();
+
+  const startEditor = () =>
+    editor.open(file, (url) => {
+      const input = el('#f-img');
+      if (!input) return;
+      input.value = url;
+      input.dispatchEvent(new Event('change'));
+      toast('Изображение обновлено');
+    });
+
+  if (!sheetEl.hidden) {
+    // открыта форма референса — вставляем прямо в неё
+    if (el('#f-img')) startEditor();
+    return;
+  }
+
+  // на экране референсов — создаём новый референс с этим изображением
+  if (state.tab !== 'references' || state.projectId === null) {
+    toast('Откройте вкладку «Референсы» и выберите проект', true);
+    return;
+  }
+  referenceForm();
+  startEditor();
+});
 
 /* ---------- события ---------- */
 
