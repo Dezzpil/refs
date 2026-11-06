@@ -1,7 +1,8 @@
 import os
+import uuid
 from typing import Iterator
 
-from fastapi import Depends, FastAPI, HTTPException, Query
+from fastapi import Depends, FastAPI, HTTPException, Query, UploadFile, File
 from sqlalchemy import create_engine, func, select
 from sqlalchemy.orm import Session, sessionmaker
 
@@ -10,6 +11,22 @@ from . import models, schemas
 DATABASE_URL = os.getenv(
     "DATABASE_URL", "postgresql+psycopg2://refs:refspass@db:5432/refs"
 )
+
+# Каталог загруженных изображений (том, общий с nginx)
+UPLOAD_DIR = os.getenv("UPLOAD_DIR", "/data/uploads")
+MAX_UPLOAD_BYTES = int(os.getenv("MAX_UPLOAD_BYTES", str(12 * 1024 * 1024)))
+ALLOWED_TYPES = {
+    "image/jpeg": ".jpg",
+    "image/png": ".png",
+    "image/webp": ".webp",
+}
+
+# Магические байты для проверки содержимого
+MAGIC = {
+    "image/jpeg": b"\xff\xd8\xff",
+    "image/png": b"\x89PNG",
+    "image/webp": b"RIFF",
+}
 
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 SessionLocal = sessionmaker(bind=engine, autoflush=False, expire_on_commit=False)
@@ -57,6 +74,25 @@ def _project_out(db: Session, p: models.Project) -> schemas.ProjectOut:
             select(func.count()).where(models.AssetType.project_id == p.id)
         ),
     )
+
+
+# ---------- uploads ----------
+
+@app.post("/api/uploads")
+async def upload_image(file: UploadFile = File(...)) -> dict:
+    """Загрузка изображения; отдаёт URL вида /uploads/<имя>."""
+    if file.content_type not in ALLOWED_TYPES:
+        raise HTTPException(400, "Допустимы только изображения JPEG, PNG или WebP")
+    content = await file.read()
+    if len(content) > MAX_UPLOAD_BYTES:
+        raise HTTPException(413, "Файл слишком большой (максимум 12 МБ)")
+    if not content.startswith(MAGIC[file.content_type]):
+        raise HTTPException(400, "Содержимое файла не соответствует типу изображения")
+    name = uuid.uuid4().hex + ALLOWED_TYPES[file.content_type]
+    os.makedirs(UPLOAD_DIR, exist_ok=True)
+    with open(os.path.join(UPLOAD_DIR, name), "wb") as f:
+        f.write(content)
+    return {"url": f"/uploads/{name}"}
 
 
 # ---------- projects ----------

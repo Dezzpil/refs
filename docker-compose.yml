@@ -28,6 +28,9 @@ services:
         condition: service_healthy
     environment:
       DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-refs}:${POSTGRES_PASSWORD:-refspass}@db:5432/${POSTGRES_DB:-refs}
+      UPLOAD_DIR: /data/uploads
+    volumes:
+      - uploads:/data/uploads
     # Бэкенд доступен только внутри сети compose; наружу его отдаёт nginx.
     expose:
       - "8000"
@@ -41,8 +44,10 @@ services:
     volumes:
       - ./frontend:/usr/share/nginx/html:ro
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - uploads:/usr/share/nginx/html/uploads:ro
     ports:
       - "${APP_PORT:-8080}:80"
 
 volumes:
   pgdata:
+  uploads:

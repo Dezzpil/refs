@@ -29,6 +29,38 @@
 
   <div id="sheet-backdrop" class="sheet-backdrop" hidden></div>
   <div id="sheet" class="sheet" hidden role="dialog" aria-modal="true"></div>
+
+  <div id="editor" class="editor" hidden role="dialog" aria-modal="true" aria-label="Редактор изображения">
+    <div class="editor-top">
+      <button id="ed-cancel" class="ed-btn" aria-label="Закрыть редактор">✕</button>
+      <h2 class="ed-title">Редактор</h2>
+      <button id="ed-save" class="ed-btn ed-save" aria-label="Сохранить">✓</button>
+    </div>
+    <div class="editor-stage" id="ed-stage">
+      <canvas id="ed-canvas"></canvas>
+      <div id="ed-crop-rect" class="crop-rect" hidden></div>
+    </div>
+    <div class="editor-crop-actions" id="ed-crop-actions" hidden>
+      <button class="btn btn-ghost" id="ed-crop-cancel">Отмена</button>
+      <button class="btn btn-primary" id="ed-crop-apply">Обрезать</button>
+    </div>
+    <div class="editor-tools" id="ed-tools">
+      <button class="tool" data-tool="rotate" aria-label="Повернуть на 90°">⟳</button>
+      <button class="tool" data-tool="crop" aria-label="Обрезать">✂</button>
+      <button class="tool" data-tool="pen" aria-label="Рисовать">✎</button>
+      <button class="tool" data-tool="undo" aria-label="Отменить действие">↩</button>
+      <button class="tool" data-tool="reset" aria-label="Сбросить изменения">⟲</button>
+    </div>
+    <div class="editor-colors" id="ed-colors" hidden>
+      <button class="color" data-color="#ff5d6e" style="background:#ff5d6e" aria-label="Красный"></button>
+      <button class="color" data-color="#35d0ba" style="background:#35d0ba" aria-label="Бирюзовый"></button>
+      <button class="color" data-color="#6ea8fe" style="background:#6ea8fe" aria-label="Голубой"></button>
+      <button class="color" data-color="#ffd166" style="background:#ffd166" aria-label="Жёлтый"></button>
+      <button class="color" data-color="#ffffff" style="background:#ffffff" aria-label="Белый"></button>
+      <button class="color" data-color="#111318" style="background:#111318" aria-label="Чёрный"></button>
+    </div>
+  </div>
+
   <div id="toast" class="toast" hidden></div>
 
   <script src="app.js"></script>

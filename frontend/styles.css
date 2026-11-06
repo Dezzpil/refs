@@ -30,6 +30,9 @@ html, body {
 button { font: inherit; color: inherit; }
 input, select, textarea { font: inherit; }
 
+/* атрибут hidden всегда сильнее display */
+[hidden] { display: none !important; }
+
 /* ---------- верхняя панель ---------- */
 .topbar {
   position: sticky;
@@ -378,6 +381,136 @@ input, select, textarea { font: inherit; }
 }
 
 .toast.is-error { border-color: var(--danger); color: var(--danger); }
+
+/* ---------- редактор изображения ---------- */
+.editor {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  padding-top: env(safe-area-inset-top);
+}
+
+.editor-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ed-title {
+  margin: 0;
+  font-size: 17px;
+}
+
+.ed-btn {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  width: 40px;
+  height: 40px;
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.ed-save {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  font-weight: 700;
+}
+
+.editor-stage {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  touch-action: none;
+}
+
+#ed-canvas {
+  max-width: 100%;
+  max-height: 100%;
+  touch-action: none;
+}
+
+.crop-rect {
+  position: absolute;
+  border: 2px dashed var(--accent);
+  background: rgba(53, 208, 186, 0.12);
+  pointer-events: none;
+}
+
+.editor-crop-actions {
+  display: flex;
+  gap: 10px;
+  padding: 10px 16px 0;
+}
+
+.editor-tools {
+  display: flex;
+  justify-content: space-around;
+  gap: 6px;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+}
+
+.tool {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  color: var(--text-dim);
+  min-width: 58px;
+  padding: 10px 0;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.tool.is-active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+}
+
+.editor-colors {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 8px 16px 0;
+}
+
+.color {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  cursor: pointer;
+}
+
+.color.is-active {
+  border-color: var(--text);
+  transform: scale(1.12);
+}
+
+/* выбор файла в форме */
+.img-pick {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.img-pick .btn {
+  flex: 1;
+  font-size: 14px;
+  padding: 10px 8px;
+}
 
 /* ---------- широкие экраны ---------- */
 @media (min-width: 720px) {
