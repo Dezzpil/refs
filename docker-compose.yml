@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: ${POSTGRES_CONTAINER_NAME:-postgres_dev}
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-app_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-app_password}
+      POSTGRES_DB: ${POSTGRES_DB:-app_db}
+      # Локаль и кодировка для корректной работы с кириллицей
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C.UTF-8"
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      # Скрипты из ./init выполняются автоматически при ПЕРВОМ запуске (пустой volume)
+      - ./init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-app_user} -d ${POSTGRES_DB:-app_db}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    # Ограничение ресурсов (при необходимости раскомментируйте)
+    # mem_limit: 512m
+    # cpus: 1.0
+
+  # Одноразовый сервис для проверки подключения (запускать вручную):
+  # docker compose run --rm psql-check
+  psql-check:
+    image: postgres:16-alpine
+    profiles: ["tools"]
+    entrypoint: ["psql", "-h", "db", "-U", "${POSTGRES_USER:-app_user}", "-d", "${POSTGRES_DB:-app_db}", "-c", "SELECT version(); SELECT * FROM app_schema.users LIMIT 5;"]
+    environment:
+      PGPASSWORD: ${POSTGRES_PASSWORD:-app_password}
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  db_data:
