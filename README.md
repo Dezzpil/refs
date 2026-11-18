@@ -7,6 +7,8 @@
 
 Стек: **Docker Compose + PostgreSQL + FastAPI + Nginx**.
 
+Следующее обновление: [авторские оценки референсов и read-only MCP](docs/reference-feedback-and-mcp.md) (спецификация, ещё не реализовано).
+
 ## Структура
 
 ```
